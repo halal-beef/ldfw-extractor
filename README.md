@@ -2,10 +2,6 @@
 
 Extracts individual LDFWs (LoaDable FirmWare) from an LDFW iamge
 
->[!CAUTION]
-> The LDFWs are still encrypted meaning it's useless for analysis.
-> Work is being attempted to decrypt them though.
-
 ## Compilation
 
 Nothing fancy, just do
