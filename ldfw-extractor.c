@@ -33,6 +33,8 @@ static int extract_ldfws(const char *path)
 	uint64_t offset = 0;
 	int index = 0;
 
+	uint64_t load_address = 0xBF700000;
+
 	while (1) {
 		struct fw_header hdr;
 
@@ -51,8 +53,11 @@ static int extract_ldfws(const char *path)
 		printf("ldfw [%d]: ldfw version 0x%x name: %s size: 0x%x\n",
 			index, hdr.version, name, hdr.size);
 
-		printf("init entry: 0x%x, entrypoint: 0x%x, start_smc_id: 0x%x\n\n",
+		printf("init entry: 0x%x, entrypoint: 0x%x, start_smc_id: 0x%x\n",
 			hdr.init_entry, hdr.entry_point, hdr.start_smc_id);
+
+		printf("ldfw loaded to: 0x%llx [1]\n\n", load_address);
+		load_address += (((hdr.size + 0xFFF) >> 12) + 0x21) * 0x1000;
 
 		uint8_t *buf = malloc(hdr.size);
 		if (!buf) {
@@ -90,6 +95,7 @@ fail:
 	}
 
 	fclose(fp);
+	printf("[1]: ldfw load addresses were based off of calculations done in exynos9830 EL3_MON.\n");
 	return 0;
 }
 
